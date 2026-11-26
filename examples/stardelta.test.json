@@ -1,0 +1,16 @@
+{"format":"plcemu-test","version":1,"program":"stardelta.plc.json","scan_ms":100,"tests":[
+ {"name":"スター5秒→無電圧0.3秒→デルタ","steps":[
+  {"set":{"X0":1},"scans":1,"expect":{"Y0":1,"Y1":1,"Y2":0,"CN0":1}},
+  {"set":{"X0":0},"scans":49,"expect":{"Y0":1,"Y1":1,"Y2":0}},
+  {"scans":1,"expect":{"Y1":0,"Y2":0}},
+  {"scans":2,"expect":{"Y1":0,"Y2":0}},
+  {"scans":1,"expect":{"Y1":0,"Y2":1}},
+  {"ms":3000,"expect":{"Y2":1,"D0":3}}]},
+ {"name":"X1停止で全OFF","steps":[
+  {"set":{"X0":1},"scans":60},
+  {"set":{"X0":0,"X1":1},"scans":1,"expect":{"Y0":0,"Y1":0,"Y2":0}}]},
+ {"name":"過負荷で停止・異常保持、X3でリセット","steps":[
+  {"set":{"X0":1},"scans":10},
+  {"set":{"X0":0,"X2":1},"scans":1,"expect":{"Y0":0,"Y1":0,"M1":1}},
+  {"set":{"X2":0},"scans":20,"expect":{"Y0":0,"M1":1}},
+  {"set":{"X3":1},"scans":1,"expect":{"M1":0,"Y3":0}}]}]}

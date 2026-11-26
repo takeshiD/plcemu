@@ -1,0 +1,14 @@
+{"format":"plcemu-ladder","version":1,"name":"mixer (バッチ混合ステップ制御)","timer_unit_ms":100,"rungs":[
+ {"comment":"工程D10 0待機 1給液 2撹拌 3排出 4完了","il":["LD= D10 K0","ANDP X0","ANI X3","ANI C0","MOV K1 D10"]},
+ {"comment":"1→2 X1 上限センサ(満液)","il":["LD= D10 K1","AND X1","MOV K2 D10"]},
+ {"comment":"2→3 加熱撹拌10秒","il":["LD= D10 K2","OUT T0 K100"]},
+ {"il":["LD T0","MOV K3 D10"]},
+ {"comment":"3→4 X2 下限センサ(空)","il":["LD= D10 K3","AND X2","ANI X1","MOV K4 D10"]},
+ {"comment":"4→0 バッチ数を計数して待機へ","il":["LD= D10 K4","OUT C0 K3","+P D11 K1 D11","MOV K0 D10"]},
+ {"comment":"X3 非常停止 / X4 バッチ数クリア","il":["LD X3","MOV K0 D10"]},
+ {"il":["LD X4","RST C0","MOV K0 D11"]},
+ {"comment":"Y0給液弁 Y1ヒータ Y2撹拌機 Y3排出弁","il":["LD= D10 K1","OUT Y0"]},
+ {"il":["LD= D10 K2","OUT Y1","OUT Y2"]},
+ {"il":["LD= D10 K3","OUT Y3"]},
+ {"comment":"Y4 運転中 / Y5 3バッチ完了","il":["LD> D10 K0","OUT Y4"]},
+ {"il":["LD C0","OUT Y5"]}]}

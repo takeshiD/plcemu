@@ -1,0 +1,13 @@
+{"format":"plcemu-ladder","version":1,"name":"tank (給水タンク液位制御)","timer_unit_ms":100,"rungs":[
+ {"comment":"液位D0(%)更新クロック 0.3秒","il":["LDI T9","OUT T9 K1"]},
+ {"comment":"Y0 ポンプ 20%以下で起動/80%で停止","il":["LD<= D0 K20","OR Y0","AND< D0 K80","AND X0","ANI X2","OUT Y0"]},
+ {"comment":"ポンプ給水 +4%","il":["LD Y0","AND T9","+ D0 K4 D0"]},
+ {"comment":"Y1 排水弁 (X1で開)","il":["LD X1","AND> D0 K0","ANI X2","OUT Y1"]},
+ {"comment":"排水 -4% / 常時消費 -1%","il":["LD Y1","AND T9","- D0 K4 D0"]},
+ {"il":["LD T9","AND> D0 K0","- D0 K1 D0"]},
+ {"comment":"下限0%で止める","il":["LD< D0 K0","MOV K0 D0"]},
+ {"comment":"Y2 満水 / Y3 渇水警報(点滅)","il":["LD>= D0 K80","OUT Y2"]},
+ {"il":["LD< D0 K10","AND T8","OUT Y3"]},
+ {"il":["LDI T7","OUT T8 K4"]},
+ {"il":["LD T8","OUT T7 K4"]},
+ {"comment":"ポンプ起動回数","il":["LD Y0","OUT C0 K9999"]}]}

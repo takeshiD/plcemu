@@ -23,6 +23,22 @@ TUI操作: `Space` 実行/停止, `s` 1スキャン, `↑↓` 入力選択, `Ent
 
 MCP設定例: `{"mcpServers":{"plcemu":{"command":"/path/to/plcemu","args":["mcp"]}}}`
 
+## サンプル (`examples/`)
+各 `*.plc.json` に同名の `*.test.json` があります（`plcemu test examples/<名前>.test.json`）。TUIは `--scan-ms 100` 推奨。
+
+| ファイル | 内容 | 入力 | 見どころ |
+|---|---|---|---|
+| `motor` | 自己保持・タイマ・カウンタの基本 | X0起動 X1停止 X2計数 X3リセット | 最小構成 |
+| `traffic` | 押ボタン式信号機（車 青8s→黄2s→赤6s、歩行者青は点灯→点滅） | X0運転 X1押ボタン | タイマ連鎖、点滅クロック、押ボタンで青を短縮(SET/RST, TN比較) |
+| `stardelta` | スターデルタ始動（スター5s→無電圧0.3s→デルタ） | X0起動 X1停止 X2過負荷 X3異常リセット | インタロック、異常ランプ点滅、始動回数、運転秒数(`/`) |
+| `tank` | 給水タンク液位制御（液位D0を加減算で模擬） | X0自動 X1排水 X2非常停止 | ヒステリシス(20%起動/80%停止)、警報点滅 |
+| `parking` | 駐車場の満空管理（定員10台） | X0入口 X1出口 X2台数リセット | 立上り計数、空き台数=D1-D0、満車/残りわずか表示、ゲート開時間 |
+| `mixer` | バッチ混合のステップ制御（給液→加熱撹拌10s→排出） | X0起動 X1上限 X2下限 X3非常停止 X4クリア | 工程番号D10による状態遷移、3バッチ完了 |
+
+```sh
+./target/release/plcemu tui examples/traffic.plc.json --scan-ms 100   # X0をONにしてSpace
+```
+
 ## プログラム形式 `plcemu-ladder` v1
 ```json
 {"format":"plcemu-ladder","version":1,"name":"motor","timer_unit_ms":100,

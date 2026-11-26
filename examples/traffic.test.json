@@ -1,0 +1,19 @@
+{"format":"plcemu-test","version":1,"program":"traffic.plc.json","scan_ms":100,"tests":[
+ {"name":"停止中は車赤・歩行者赤","steps":[{"scans":2,"expect":{"Y0":0,"Y1":0,"Y2":1,"Y3":0,"Y4":1}}]},
+ {"name":"青8秒→黄2秒→赤6秒で1サイクル","steps":[
+  {"set":{"X0":1},"scans":1,"expect":{"Y0":1,"Y2":0,"Y4":1}},
+  {"scans":79,"expect":{"Y0":1,"Y1":0}},
+  {"scans":1,"expect":{"Y0":0,"Y1":1}},
+  {"scans":20,"expect":{"Y1":0,"Y2":1,"Y3":1,"Y4":0}},
+  {"ms":2900,"expect":{"Y2":1,"Y3":1}},
+  {"ms":1600,"expect":{"Y3":0,"Y4":1}},
+  {"ms":1600,"expect":{"Y0":1,"Y2":0,"D0":1}}]},
+ {"name":"押ボタンで青を3秒に短縮","steps":[
+  {"set":{"X0":1},"scans":10},
+  {"set":{"X1":1},"scans":2,"expect":{"M1":1,"Y0":1}},
+  {"set":{"X1":0},"scans":19,"expect":{"Y0":1}},
+  {"scans":1,"expect":{"Y0":0,"Y1":1,"M2":1}},
+  {"scans":20,"expect":{"Y2":1,"Y3":1}}]},
+ {"name":"赤中の押ボタンは受け付けない","steps":[
+  {"set":{"X0":1},"scans":105},
+  {"set":{"X1":1},"scans":2,"expect":{"M1":0,"Y2":1}}]}]}

@@ -1,0 +1,21 @@
+{"format":"plcemu-test","version":1,"program":"parking.plc.json","scan_ms":100,"tests":[
+ {"name":"入庫で台数+1、ゲート3秒開","steps":[
+  {"set":{"X0":1},"scans":1,"expect":{"D0":1,"D2":9,"Y1":1,"Y2":1}},
+  {"set":{"X0":0},"ms":2900,"expect":{"Y2":1}},
+  {"ms":200,"expect":{"Y2":0}}]},
+ {"name":"残り3台で予告、10台で満車、満車中は入庫しない","steps":[
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1,"expect":{"D0":7,"D2":3,"Y4":1,"Y0":0}},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1,"expect":{"D0":10,"Y0":1,"Y1":0,"Y4":0}},
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0},"scans":1,"expect":{"D0":10}},
+  {"set":{"X1":1},"scans":1,"expect":{"D0":9,"Y0":0,"Y1":1,"Y3":1}}]},
+ {"name":"0台で出庫しても負にならない","steps":[{"set":{"X1":1},"scans":2,"expect":{"D0":0,"Y3":0}}]},
+ {"name":"X2で台数リセット","steps":[
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0,"X2":1},"scans":1,"expect":{"D0":0,"D2":10}}]}]}

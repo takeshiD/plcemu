@@ -1,0 +1,12 @@
+{"format":"plcemu-ladder","version":1,"name":"stardelta (スターデルタ始動)","timer_unit_ms":100,"rungs":[
+ {"comment":"X0起動 X1停止 X2過負荷 で自己保持","il":["LD X0","OR M0","ANI X1","ANI X2","OUT M0","OUT Y0"]},
+ {"comment":"スター結線で5秒加速","il":["LD M0","OUT T0 K50"]},
+ {"comment":"Y1 スター (デルタとインタロック)","il":["LD M0","ANI T0","ANI Y2","OUT Y1"]},
+ {"comment":"切替の無電圧時間 0.3秒","il":["LD T0","OUT T1 K3"]},
+ {"comment":"Y2 デルタ (スターとインタロック)","il":["LD T1","AND M0","ANI Y1","OUT Y2"]},
+ {"comment":"過負荷で異常ランプを保持、X3でリセット","il":["LD X2","OR M1","ANI X3","OUT M1"]},
+ {"comment":"Y3 異常ランプ 点滅","il":["LD M1","AND T8","OUT Y3"]},
+ {"il":["LDI T9","OUT T8 K5"]},
+ {"il":["LD T8","OUT T9 K5"]},
+ {"comment":"始動回数C0","il":["LD M0","OUT C0 K9999"]},
+ {"comment":"デルタ運転時間 TN5(0.1s) → D0 秒","il":["LD Y2","OUT T5 K32767","/ TN5 K10 D0"]}]}

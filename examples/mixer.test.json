@@ -1,0 +1,16 @@
+{"format":"plcemu-test","version":1,"program":"mixer.plc.json","scan_ms":100,"tests":[
+ {"name":"給液→加熱撹拌10秒→排出→完了","steps":[
+  {"set":{"X0":1},"scans":1,"expect":{"D10":1,"Y0":1,"Y4":1}},
+  {"set":{"X0":0,"X1":1},"scans":1,"expect":{"D10":2,"Y0":0,"Y1":1,"Y2":1}},
+  {"ms":9900,"expect":{"D10":2,"Y1":1}},
+  {"scans":1,"expect":{"D10":3,"Y1":0,"Y2":0,"Y3":1}},
+  {"set":{"X1":0,"X2":1},"scans":1,"expect":{"D10":0,"D11":1,"CN0":1,"Y3":0,"Y4":0}}]},
+ {"name":"3バッチで完了ランプ、X4でクリア","steps":[
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0,"X1":1},"scans":102},{"set":{"X1":0,"X2":1},"scans":1},
+  {"set":{"X0":1,"X2":0},"scans":1},{"set":{"X0":0,"X1":1},"scans":102},{"set":{"X1":0,"X2":1},"scans":1},
+  {"set":{"X0":1,"X2":0},"scans":1},{"set":{"X0":0,"X1":1},"scans":102},{"set":{"X1":0,"X2":1},"scans":1,"expect":{"D11":3,"Y5":1}},
+  {"set":{"X0":1,"X2":0},"scans":1,"expect":{"D10":0}},
+  {"set":{"X0":0,"X4":1},"scans":1,"expect":{"Y5":0,"D11":0}}]},
+ {"name":"非常停止で待機へ戻る","steps":[
+  {"set":{"X0":1},"scans":1},{"set":{"X0":0,"X1":1},"scans":20,"expect":{"Y1":1}},
+  {"set":{"X3":1},"scans":1,"expect":{"D10":0,"Y1":0,"Y2":0,"Y4":0}}]}]}

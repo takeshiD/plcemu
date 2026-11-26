@@ -1,0 +1,15 @@
+{"format":"plcemu-test","version":1,"program":"tank.plc.json","scan_ms":100,"tests":[
+ {"name":"自動OFFならポンプは動かない","steps":[{"scans":10,"expect":{"Y0":0,"D0":0}}]},
+ {"name":"空から給水し80%で停止","steps":[
+  {"set":{"X0":1},"scans":1,"expect":{"Y0":1,"CN0":1}},
+  {"scans":78,"expect":{"Y0":1,"Y2":0}},
+  {"scans":1,"expect":{"Y0":1,"Y2":1,"D0":81}},
+  {"scans":1,"expect":{"Y0":0}},
+  {"ms":3000,"expect":{"Y0":0}}]},
+ {"name":"排水で20%以下になるとポンプ再起動","steps":[
+  {"set":{"X0":1},"scans":90},
+  {"set":{"X1":1},"scans":30,"expect":{"Y0":0,"Y1":1}},
+  {"scans":40,"expect":{"Y0":1,"Y1":1,"CN0":2}}]},
+ {"name":"非常停止X2でポンプ・排水弁OFF","steps":[
+  {"set":{"X0":1,"X1":1},"scans":5},
+  {"set":{"X2":1},"scans":1,"expect":{"Y0":0,"Y1":0}}]}]}

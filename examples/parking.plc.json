@@ -1,0 +1,13 @@
+{"format":"plcemu-ladder","version":1,"name":"parking (駐車場 満空管理)","timer_unit_ms":100,"rungs":[
+ {"comment":"定員 D1=10台 (M100は未使用=常時ON)","il":["LDI M100","MOV K10 D1"]},
+ {"comment":"X0 入口: 満車でなければ入庫・ゲート開","il":["LDP X0","ANI Y0","+ D0 K1 D0","SET M0"]},
+ {"comment":"X1 出口: 出庫・ゲート開","il":["LDP X1","AND> D0 K0","- D0 K1 D0","SET M1"]},
+ {"comment":"X2 台数補正リセット","il":["LD X2","MOV K0 D0"]},
+ {"comment":"空き台数 D2 = D1 - D0","il":["LDI M100","- D1 D0 D2"]},
+ {"comment":"Y2 入口ゲート / Y3 出口ゲート 3秒開","il":["LD M0","OUT Y2","OUT T0 K30"]},
+ {"il":["LD T0","RST M0"]},
+ {"il":["LD M1","OUT Y3","OUT T1 K30"]},
+ {"il":["LD T1","RST M1"]},
+ {"comment":"Y0 満車 / Y1 空車 / Y4 残りわずか(3台以下)","il":["LD>= D0 D1","OUT Y0"]},
+ {"il":["LDI Y0","OUT Y1"]},
+ {"il":["LD<= D2 K3","ANI Y0","OUT Y4"]}]}

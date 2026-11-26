@@ -1,0 +1,16 @@
+{"format":"plcemu-ladder","version":1,"name":"traffic (押ボタン式信号)","timer_unit_ms":100,"rungs":[
+ {"comment":"X0 運転スイッチ","il":["LD X0","OUT M0"]},
+ {"comment":"点滅用クロック T8/T9 (0.5s周期)","il":["LDI T9","OUT T8 K5"]},
+ {"il":["LD T8","OUT T9 K5"]},
+ {"comment":"X1 歩行者押ボタン (車青のときだけ受付)","il":["LD X1","AND Y0","SET M1"]},
+ {"comment":"押ボタン受付後、青3秒以上で早期切替","il":["LD M1","AND>= TN0 K30","SET M2"]},
+ {"comment":"車青 8秒","il":["LD M0","ANI T2","OUT T0 K80"]},
+ {"comment":"車黄 2秒","il":["LD T0","OR M2","OUT T1 K20"]},
+ {"comment":"車赤 6秒 (歩行者横断)","il":["LD T1","OUT T2 K60"]},
+ {"comment":"車 青/黄/赤","il":["LD M0","ANI T0","ANI M2","OUT Y0"]},
+ {"il":["LD T0","OR M2","ANI T1","OUT Y1"]},
+ {"il":["LD T1","ORI M0","OUT Y2"]},
+ {"comment":"歩行者青: 3秒点灯→1.5秒点滅→全赤","il":["LD< TN2 K30","OR T8","AND T1","AND< TN2 K45","OUT Y3"]},
+ {"il":["LDI Y3","OUT Y4"]},
+ {"comment":"サイクル終了: 要求クリア / サイクル数D0","il":["LD T2","ORI M0","RST M1","RST M2"]},
+ {"il":["LD T2","+P D0 K1 D0"]}]}
