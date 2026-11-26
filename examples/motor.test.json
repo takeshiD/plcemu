@@ -1,0 +1,4 @@
+{"format":"plcemu-test","version":1,"program":"motor.plc.json","scan_ms":100,"tests":[
+ {"name":"self-hold","steps":[{"set":{"X0":1},"scans":1,"expect":{"Y0":1}},{"set":{"X0":0},"scans":1,"expect":{"Y0":1}},{"set":{"X1":1},"scans":1,"expect":{"Y0":0}}]},
+ {"name":"timer 2s","steps":[{"set":{"X0":1},"ms":2000,"expect":{"Y1":0,"TN0":19}},{"scans":1,"expect":{"Y1":1,"TN0":20}}]},
+ {"name":"counter 3","steps":[{"set":{"X2":1},"scans":1},{"set":{"X2":0},"scans":1},{"set":{"X2":1},"scans":1},{"set":{"X2":0},"scans":1},{"set":{"X2":1},"scans":1},{"scans":1,"expect":{"CN0":3,"Y2":1,"D0":3}}]}]}

@@ -1,0 +1,21 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - run: cargo fmt --check
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo test
+      - run: cargo build
+      - name: CLI smoke
+        run: |
+          ./target/debug/plcemu run examples/motor.plc.json --scan-ms 100 --scans 21 --set X0=1@0 | grep '"Y1": 1'
+          ./target/debug/plcemu test examples/motor.test.json
+          if ./target/debug/plcemu test examples/failing.test.json; then exit 1; fi
+      - name: MCP smoke
+        run: sh scripts/mcp-smoke.sh ./target/debug/plcemu

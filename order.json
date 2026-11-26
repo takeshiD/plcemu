@@ -1,0 +1,80 @@
+{
+  "schema": "kenshu-loop/order@1",
+  "title": "plcemu ラダーシミュレータ",
+  "summary": "PLCラダーを端末で動かして観察し、CLIとMCPから再現可能にテストしたい。",
+  "deliverable_type": "cli+tui",
+  "context": "Linux端末でPLCロジックを開発・学習する利用者と、GitHub Actionsやstdio MCPで実行する利用者。既存指示に従う。GitHubリポジトリ作成・pushとLiveSync紹介スライド3枚は発注者側が担当する。",
+  "requirements": [
+    {
+      "id": "R1",
+      "kind": "goal",
+      "text": "Rust製の plcemu で、MELSEC iQ-R 系の主要ラダー命令（a/b接点、コイル、直並列、SET/RST、立上り/立下り、タイマ、カウンタ、MOV、算術、比較）を実行できる。",
+      "must": true
+    },
+    {
+      "id": "R2",
+      "kind": "constraint",
+      "text": "命令、デバイス表記、スキャン順序と値の可視性、時間、カウンタ、数値境界を三菱電機公式一次資料に照らし、対応範囲と相違点を出典付きで記録し、境界動作をテストできる。",
+      "must": true
+    },
+    {
+      "id": "R3",
+      "kind": "goal",
+      "text": "TUIでラダー図と通電状態を確認し、実行/停止、1スキャン、入力切替、値の監視、ヘルプ表示を操作できる。",
+      "must": true
+    },
+    {
+      "id": "R4",
+      "kind": "constraint",
+      "text": "版管理した独自形式と実行モデルを分離し、将来の三菱電機・キーエンス形式の変換入口を用意できる。",
+      "must": true
+    },
+    {
+      "id": "R5",
+      "kind": "goal",
+      "text": "ヘッドレスCLIで固定のスキャン時間と回数による決定的実行を行いJSON結果を得られる。",
+      "must": true
+    },
+    {
+      "id": "R6",
+      "kind": "goal",
+      "text": "PLCプログラムのテストをファイルに定義して実行でき、失敗するとJSON結果と非ゼロ終了コードを得られる。",
+      "must": true
+    },
+    {
+      "id": "R7",
+      "kind": "goal",
+      "text": "MCPクライアントからstdioで接続してツールを列挙しシミュレーションを実行できる。",
+      "must": true
+    },
+    {
+      "id": "R8",
+      "kind": "goal",
+      "text": "GitHub Actionsでfmt、clippy、Rustテスト、CLIとMCPのスモークテストを実行できる。",
+      "must": true
+    },
+    {
+      "id": "R9",
+      "kind": "goal",
+      "text": "実装されたTUIを操作して撮影した、状態変化がわかるGIFをREADMEで閲覧できる。",
+      "must": true
+    },
+    {
+      "id": "R10",
+      "kind": "constraint",
+      "text": "80列級端末で、初回利用者が画面案内とヘルプから主要操作を見つけられる。",
+      "must": true
+    },
+    {
+      "id": "R11",
+      "kind": "constraint",
+      "text": "起動方法、サンプル、命令・形式の対応範囲と制約をREADMEから確認できる。",
+      "must": true
+    }
+  ],
+  "out_of_scope": [
+    "FB、PLC実機接続・制御",
+    "GX Worksネイティブ入出力、完全互換",
+    "キーエンス形式の実変換"
+  ]
+}

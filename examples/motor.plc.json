@@ -1,0 +1,7 @@
+{"format":"plcemu-ladder","version":1,"name":"motor","timer_unit_ms":100,"rungs":[
+ {"comment":"起動X0/停止X1 自己保持","il":["LD X0","OR Y0","ANI X1","OUT Y0"]},
+ {"comment":"運転2秒でY1","il":["LD Y0","OUT T0 K20"]},
+ {"il":["LD T0","OUT Y1"]},
+ {"comment":"X2立上りで計数","il":["LDP X2","OUT C0 K3","+P D0 K1 D0"]},
+ {"il":["LD C0","OR> D0 K5","OUT Y2"]},
+ {"comment":"X3でリセット","il":["LD X3","RST C0","MOV K0 D0"]}]}
